@@ -1,0 +1,14 @@
+/* Exemplo de regra para alterar a cor de fundo de linhas ímpares */
+.custom-table tbody tr:nth-child(odd) {
+    background-color: #8cd1e7; /* Azul claro */
+}
+
+.custom-h5 {
+    color: #000000; /* Azul claro ou outra cor desejada */
+}
+
+
+.custom-card-header {
+    background-color: #8cd1e7; /* Azul claro ou outra cor desejada */
+    color: #fff; /* Cor do texto, pode ser branca ou outra cor que contraste bem */
+}
