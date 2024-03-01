@@ -1,6 +1,6 @@
 <?php
 
-require_once("conexao.php");
+require_once('conexao.php');
 
 // Atenção: Este get está associado ao botão excluir, junto ao get global do código.
 if (isset($_GET['excluir'])) {
@@ -14,9 +14,28 @@ if (isset($_GET['excluir'])) {
     }
 }
 
-$results = $conn->query("select * from cadastrar_produto")->fetchAll();
+$results = $conn->query("SELECT id, produto, quantidade, 
+                                CASE descricao
+                                    WHEN 1 THEN 'Eletrônicos'
+                                    WHEN 2 THEN 'Informática'
+                                    WHEN 3 THEN 'Domésticos'
+                                    WHEN 4 THEN 'Celulares'
+                                    WHEN 5 THEN 'Acessórios'
+                                    ELSE 'Outra Descrição'
+                                END as descricao,
+                                valor_unitario, unidade_medida
+                         FROM cadastrar_produto")->fetchAll();
 
-$arrayDescricao = [1 => 'Eletrônicos', 2 => 'Informática', 3 => 'Domésticos', 4 => 'Celulares', 5 => 'Acessórios'];
+
+$arrayDescricao = [
+    1 => 'Eletrônicos',
+    2 => 'Informática',
+    3 => 'Domésticos',
+    4 => 'Celulares',
+    5 => 'Acessórios'
+];
+
+
 
 include_once("./layout/_header.php");
 
@@ -39,7 +58,7 @@ include_once("./layout/_header.php");
 
                     <li class="nav-item">
                         <a class="nav-link " href="vendas.php">
-                            <h5 class="text-light">Vendas Produtos</h5>
+                            <h5 class="text-light">Produtos Disponíveis</h5>
 
                         </a>
                     </li>
@@ -52,24 +71,24 @@ include_once("./layout/_header.php");
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="card mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center custom-card-header bg-warning">
-                    <h2 class="text-center my-4 h2-striped">Cadastro Produto
+                    <h2 class="text-center my-4 h2-striped">Cadastro de Produtos
                         <a class="btn btn-primary" href="cadastro.php">+Adicionar</a>
                     </h2>
-                    <a class="btn btn-dark" href="movimentacoes.php">Controle de Estoque</a>
+                    <a class="btn btn-primary" href="movimentacoes.php">Controle de Estoque</a>
 
-                    <div class="text-center mt-3" >
-                        
-                            <?php
-                            // Adiciona um botão/link para sair (redirecionando para a tela de login)
-                            echo '<a class="btn btn-danger" style="font-size: 17px; padding: 6px 2rem;" href="login.php">Sair</a>';
-                            ?>
-                      
+                    <div class="text-center mt-3">
+
+                        <?php
+                        // Adiciona um botão/link para sair (redirecionando para a tela de login)
+                        echo '<a class="btn btn-danger" style="font-size: 17px; padding: 6px 2rem;" href="login.php">Sair</a>';
+                        ?>
+
                     </div>
 
 
 
                 </div>
-                <div class="card-body">
+                <div class="card-body ">
                     <!-- Tabela de Cadastro de Produtos -->
                     <table class="table table-striped table-dark">
                         <!-- Cabeçalho da Tabela -->
@@ -92,7 +111,7 @@ include_once("./layout/_header.php");
                                     <td><?= $item['id'] ?></td>
                                     <td><?= $item['produto'] ?></td>
                                     <td><?= $item['quantidade'] ?></td>
-                                    <td><?= $arrayDescricao[$item['descricao']] ?></td>
+                                    <td><?= isset($item['descricao']) ? $item['descricao'] : 'N/A' ?></td>
                                     <td><?= $item['valor_unitario'] ?></td>
                                     <td><?= $item['unidade_medida'] ?></td>
 
